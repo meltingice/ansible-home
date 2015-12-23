@@ -1,0 +1,30 @@
+---
+- name: Check if apt-ntop is installed
+  command: dpkg-query -W apt-ntop
+  register: apt_ntop_check_deb
+  failed_when: apt_ntop_check_deb.rc > 1
+  changed_when: apt_ntop_check_deb.rc == 1
+
+- name: Download apt-ntop
+  get_url: 
+    url="{{ apt_ntop_url }}"
+    dest="/home/{{ ansible_env.USER }}/Downloads/apt-ntop.deb"
+  when: apt_ntop_check_deb.rc == 1
+
+- name: Install apt-ntop
+  apt: deb="/home/{{ ansible_env.USER }}/Downloads/apt-ntop.deb"
+  sudo: true
+  when: apt_ntop_check_deb.rc == 1
+
+- name: Install ntop packages
+  when: apt_ntop_check_deb.rc == 0
+  become: yes
+  become_method: sudo
+  apt: pkg={{item}} state=installed update_cache=true
+  with_items:
+    - pfring
+    - nprobe
+    - ntopng
+    - ntopng-data
+    - n2disk
+    - nbox
