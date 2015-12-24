@@ -74,8 +74,8 @@ rocommunity secret  {{ snmp.private_network }}
 
 #  Note that setting these values here, results in the corresponding MIB objects being 'read-only'
 #  See snmpd.conf(5) for more details
-sysLocation    Home
-sysContact     Ryan <meltingice8917@gmail.com>
+sysLocation    {{ snmp.location }}
+sysContact     {{ snmp.contact }}
                                                  # Application + End-to-End layers
 sysServices    72
 
