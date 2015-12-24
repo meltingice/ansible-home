@@ -1,6 +1,6 @@
 ---
 - name: Create SSH directory
-  command: mkdir -p ~/.ssh
+  file: path=~/.ssh state=directory
 
 - name: Copy public SSH key
   copy: src=id_rsa.pub dest=~/.ssh/authorized_keys
@@ -12,3 +12,9 @@
   with_items:
     - htop
     - avahi-daemon
+    - snmpd
+
+- name: Add SNMP configuration
+  become: yes
+  become_method: sudo
+  template: src=snmp.conf.j2 dest=/etc/snmp/snmp.conf
