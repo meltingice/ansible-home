@@ -1,4 +1,13 @@
 ---
+- name: Add Videos NFS mount
+  mount: name=/data/Videos src=10.0.1.2:/data/Videos fstype=nfs opts=rw,hard,intr state=mounted
+
+- name: Add Music NFS mount
+  mount: name=/data/Music src=10.0.1.2:/data/Music fstype=nfs opts=rw,hard,intr state=mounted
+
+- name: Add Transmission NFS mount
+  mount: name=/data/Transmission src=10.0.1.2:/data/Transmission fstype=nfs opts=rw,hard,intr state=mounted
+
 - name: Download latest plexupdate script
   get_url:
     url="https://raw.githubusercontent.com/mrworf/plexupdate/master/plexupdate.sh"

@@ -25,7 +25,7 @@
 - name: Ensure SickRage init script is executable
   become: yes
   become_method: sudo
-  command: chmod +x /etc/init.d/sickrage
+  file: path=/etc/init.d/sickrage mode=0755
 
 - name: Copy defaults script for enabling SickRage at startup
   become: yes
