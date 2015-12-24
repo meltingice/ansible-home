@@ -1,0 +1,28 @@
+---
+- name: Add Ubiquiti APT source
+  become: yes
+  become_method: sudo
+  apt_repository: repo="deb http://www.ubnt.com/downloads/unifi/debian stable ubiquiti" state=present
+
+- name: Add Mongo APT source 
+  become: yes
+  become_method: sudo
+  apt_repository: repo="deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" state=present
+
+- name: Add Ubiquiti APT key
+  become: yes
+  become_method: sudo
+  apt_key: keyserver=keyserver.ubuntu.com id=C0A52C50
+
+- name: Add Mongo APT key
+  become: yes
+  become_method: sudo
+  apt_key: keyserver=keyserver.ubuntu.com id=7F0CEB10
+
+- name: Install UniFi
+  become: yes
+  become_method: sudo
+  apt: pkg=unifi state=installed update_cache=true
+
+- name: Start UniFi service
+  service: name=unifi state=started
