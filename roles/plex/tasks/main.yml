@@ -1,0 +1,22 @@
+---
+- name: Download latest plexupdate script
+  get_url:
+    url="https://raw.githubusercontent.com/mrworf/plexupdate/master/plexupdate.sh"
+    dest="/home/{{ ansible_env.USER }}/plexupdate.sh"
+    mode=0755
+
+- name: plexupdate configuration
+  become: yes
+  become_method: sudo
+  copy: src=plexupdate.conf dest=/root/.plexupdate
+
+- name: Execute plexupdate script
+  become: yes
+  become_method: sudo
+  command: /home/{{ ansible_env.USER }}/plexupdate.sh
+  ignore_errors: yes
+
+- name: Ensure Plex is running
+  become: yes
+  become_method: sudo
+  service: name=plexmediaserver state=started

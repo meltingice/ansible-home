@@ -1,0 +1,6 @@
+---
+- hosts: media
+  roles:
+    - common
+    - plex
+    # - sickrage
