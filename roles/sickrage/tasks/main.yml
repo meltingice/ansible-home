@@ -1,0 +1,43 @@
+---
+- name: Install SickRage dependencies
+  become: yes
+  become_method: sudo
+  apt: pkg={{item}} state=installed
+  with_items:
+    - git-core
+    - python
+    - python-cheetah
+
+- name: Get the SickRage repository
+  git:
+    repo=https://github.com/SiCKRAGETV/SickRage.git
+    dest=/home/{{ ansible_env.USER }}/.sickrage
+    version=master
+
+- name: Copy the SickRage configuration
+  copy: src=autoProcessTV.cfg dest=/home/{{ ansible_env.USER }}/.sickrage/autoProcessTV/autoProcessTV.cfg
+
+- name: Install the SickRage init script
+  become: yes
+  become_method: sudo
+  command: creates="/etc/init.d/sickrage" cp /home/{{ ansible_env.USER }}/.sickrage/runscripts/init.ubuntu /etc/init.d/sickrage
+
+- name: Ensure SickRage init script is executable
+  become: yes
+  become_method: sudo
+  command: chmod +x /etc/init.d/sickrage
+
+- name: Copy defaults script for enabling SickRage at startup
+  become: yes
+  become_method: sudo
+  template: src=sickrage.defaults.j2 dest=/etc/default/sickrage mode=0755
+
+- name: Install SickRage startup script
+  become: yes
+  become_method: sudo
+  command: update-rc.d sickrage defaults
+
+- name: Start the SickRage service
+  become: yes
+  become_method: sudo
+  service: name=sickrage state=started
