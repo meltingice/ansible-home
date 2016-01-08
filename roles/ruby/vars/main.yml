@@ -1,0 +1,5 @@
+---
+default_ruby: 2.2.2
+ruby_versions:
+  - 2.2.2
+  - 2.3.0

@@ -3,3 +3,8 @@ snmp:
   location: Home
   contact: "Ryan <meltingice8917@gmail.com>"
   private_network: 10.0.1.0/24
+packages:
+  - htop
+  - avahi-daemon
+  - snmpd
+  - git

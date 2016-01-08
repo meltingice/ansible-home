@@ -1,0 +1,5 @@
+---
+- hosts: compiler
+  roles:
+    - common
+    - ruby

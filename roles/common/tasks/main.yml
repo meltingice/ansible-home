@@ -9,10 +9,7 @@
   apt: pkg={{item}} state=installed update_cache=true
   become: yes
   become_method: sudo
-  with_items:
-    - htop
-    - avahi-daemon
-    - snmpd
+  with_items: packages
 
 - name: Add SNMP configuration
   become: yes

@@ -1,0 +1,23 @@
+---
+- name: Add RVM key
+  become: yes
+  become_method: sudo
+  command: gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+  # apt_key: keyserver=hkp://keys.gnupg.net id=409B6B1796C275462A1703113804BB82D39DC0E3
+
+- name: Fetch RVM script
+  get_url: url=https://get.rvm.io dest=/tmp/rvm.sh mode=0755
+
+- name: Install RVM
+  become: yes
+  become_method: sudo
+  command: /tmp/rvm.sh stable
+
+- name: Install Rubies
+  become: yes
+  become_method: sudo
+  command: /usr/local/rvm/bin/rvm install {{item}}
+  with_items: ruby_versions
+  
+- name: Set default Ruby
+  command: /usr/local/rvm/bin/rvm use {{default_ruby}} --default
