@@ -4,6 +4,9 @@
   with_file:
     - id_rsa.pub
 
+- name: Generate SSH keypair
+  command: creates="/home/{{ ansible_env.USER }}/.ssh/id_rsa" ssh-keygen -t rsa -C {{ ssh_email }} -f /home/{{ ansible_env.USER }}/.ssh/id_rsa -N ""
+
 - name: Install common packages
   apt: pkg={{item}} state=installed update_cache=true
   become: yes
