@@ -1,7 +1,10 @@
 ---
-- name: Add RVM key
+- name: Add build-essential packages
   become: yes
   become_method: sudo
+  apt: pkg=build-essential state=installed
+
+- name: Add RVM key
   command: gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
   # apt_key: keyserver=hkp://keys.gnupg.net id=409B6B1796C275462A1703113804BB82D39DC0E3
 
@@ -9,15 +12,16 @@
   get_url: url=https://get.rvm.io dest=/tmp/rvm.sh mode=0755
 
 - name: Install RVM
+  command: /tmp/rvm.sh --autolibs=read-fail stable
+
+- name: Install Ruby dependencies
   become: yes
   become_method: sudo
-  command: /tmp/rvm.sh stable
+  command: /home/{{ ansible_env.USER }}/.rvm/bin/rvm requirements
 
 - name: Install Rubies
-  become: yes
-  become_method: sudo
-  command: /usr/local/rvm/bin/rvm install {{item}}
+  command: /home/{{ ansible_env.USER }}/.rvm/bin/rvm install {{item}}
   with_items: ruby_versions
   
 - name: Set default Ruby
-  command: /usr/local/rvm/bin/rvm use {{default_ruby}} --default
+  command: /home/{{ ansible_env.USER }}/.rvm/bin/rvm use {{default_ruby}} --default
